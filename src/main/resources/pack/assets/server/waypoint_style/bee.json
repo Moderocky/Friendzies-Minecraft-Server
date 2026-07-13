@@ -1,0 +1,8 @@
+{
+  "near_distance": 64,
+  "far_distance": 512,
+  "sprites": [
+    "server:bee",
+    "server:tiny_bee"
+  ]
+}

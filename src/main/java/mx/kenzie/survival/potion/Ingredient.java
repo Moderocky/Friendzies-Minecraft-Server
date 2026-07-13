@@ -28,6 +28,8 @@ public record Ingredient(Material base, Component name, NamespacedKey key, Consu
                          Material... sources) {
     public static final String KEY_PREFIX = "powdered_";
     public static final NamespacedKey INGREDIENT_KEY = Survival.key("potion_ingredient");
+    private static final Set<Ingredient> INGREDIENTS = new LinkedHashSet<>();
+    private static final Set<Material> OTHER_INGREDIENTS = new HashSet<>();
     public static final Ingredient POWDERED_ECHO_SHARD = new Ingredient(Material.ECHO_SHARD, Material.ECHO_SHARD);
     public static final Ingredient POWDERED_SULFUR = new Ingredient(Material.YELLOW_DYE, Material.SULFUR, Material.SULFUR_SPIKE);
     public static final Ingredient POWDERED_SNOW = new Ingredient(Material.WHITE_DYE, Material.SNOW, Material.SNOWBALL);
@@ -37,8 +39,6 @@ public record Ingredient(Material base, Component name, NamespacedKey key, Consu
     });
     public static final Ingredient RUBBISH = new Ingredient(Material.CHARCOAL, Component.text("Rubbish"), "powdered_rubbish", _ -> {
     });
-    private static final Set<Ingredient> INGREDIENTS = new LinkedHashSet<>();
-    private static final Set<Material> OTHER_INGREDIENTS = new HashSet<>();
 
     public Ingredient(Material base, Component name, NamespacedKey key, Consumer<ItemMeta> creator, Material... sources) {
         this.base = base;

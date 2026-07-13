@@ -4,12 +4,14 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.persistence.PersistentDataViewHolder;
 import mx.kenzie.survival.Survival;
 import mx.kenzie.survival.utility.DataHelper;
-import net.kyori.adventure.key.Key;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.game.ClientboundTrackedWaypointPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.server.waypoints.ServerWaypointManager;
 import net.minecraft.world.waypoints.WaypointStyleAsset;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -36,9 +38,11 @@ import static net.minecraft.world.waypoints.WaypointStyleAssets.ROOT_ID;
 public class WaypointListener implements Listener {
     public static final NamespacedKey WAYPOINTS = Survival.key("waypoints");
     public static final NamespacedKey KIND = Survival.key("kind");
+    public static final NamespacedKey WAYPOINT_ICON = Survival.key("waypoint_icon");
     public static final ResourceKey<WaypointStyleAsset> BOWTIE = createId("bowtie");
     private static final ResourceKey<WaypointStyleAsset> DEFAULT = createId("default");
     private static final ResourceKey<WaypointStyleAsset> HUMAN = createId("server", "human");
+    private static final ResourceKey<WaypointStyleAsset> BEE = createId("server", "bee");
     private static final ResourceKey<WaypointStyleAsset> UNKNOWN = createId("server", "unknown");
     private static final ResourceKey<WaypointStyleAsset> NETHER_PORTAL = createId("server", "nether_portal");
     private static final ResourceKey<WaypointStyleAsset> NETHER_PORTAL_OVERWORLD = createId("server", "nether_portal_overworld");
@@ -226,9 +230,33 @@ public class WaypointListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         this.checkWaypointsValid(player);
-        //noinspection PatternValidation
-        player.setWaypointStyle(Key.key(HUMAN.registry().toString()));
+        updateWaypointDisplay(player);
         updateWaypoints(player);
+    }
+
+    public static String[] possibleIcons() {
+        return new String[]{HUMAN.identifier().toString(), DEFAULT.identifier().toString(), BOWTIE.identifier().toString(), HUMAN.identifier().toString(), BEE.identifier().toString(),};
+    }
+
+    public static void setWaypointIcon(Player player, NamespacedKey key) {
+        if (key == null) setWaypointIcon((PersistentDataHolder) player, null);
+        else setWaypointIcon(player, parseId(key.asString()));
+        updateWaypointDisplay(player);
+    }
+
+    private static void updateWaypointDisplay(Player player) {
+        ResourceKey<WaypointStyleAsset> key = getWaypointIcon(player);
+        //<editor-fold desc="Modify Player Icon" defaultstate="collapsed">
+        // paper's method is kind of shit
+        ServerPlayer handle = ((CraftPlayer) player).getHandle();
+        final var icon = handle.waypointIcon();
+        if (icon.style.equals(key)) return;
+        ServerLevel level = handle.level();
+        ServerWaypointManager manager = level.getWaypointManager();
+        manager.untrackWaypoint(handle);
+        icon.style = key;
+        manager.trackWaypoint(handle);
+        //</editor-fold>
     }
 
     private void checkWaypointsValid(PersistentDataHolder holder) {
@@ -249,6 +277,18 @@ public class WaypointListener implements Listener {
         Player player = event.getPlayer();
         if (event.getFrom().getWorld() == event.getTo().getWorld()) return;
         Bukkit.getScheduler().runTaskLater(Survival.plugin, () -> updateWaypoints(player), 1L);
+    }
+
+    private static ResourceKey<WaypointStyleAsset> getWaypointIcon(PersistentDataViewHolder holder) {
+        PersistentDataContainerView container = holder.getPersistentDataContainer();
+        String orDefault = container.getOrDefault(WAYPOINT_ICON, PersistentDataType.STRING, HUMAN.identifier().toString());
+        return parseId(orDefault);
+    }
+
+    private static void setWaypointIcon(PersistentDataHolder holder, ResourceKey<WaypointStyleAsset> icon) {
+        PersistentDataContainer container = holder.getPersistentDataContainer();
+        if (icon == null) container.remove(WAYPOINT_ICON);
+        else container.set(WAYPOINT_ICON, PersistentDataType.STRING, icon.identifier().toString());
     }
 
     public record Waypoint(String kind, Location location) {
