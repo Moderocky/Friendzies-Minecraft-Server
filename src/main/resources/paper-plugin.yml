@@ -1,0 +1,7 @@
+name: Server
+version: '1.0'
+main: mx.kenzie.survival.Survival
+description: 'Server things.'
+api-version: '26.1.2'
+bootstrapper: mx.kenzie.survival.SurvivalBootstrap
+#loader: io.papermc.testplugin.TestPluginLoader

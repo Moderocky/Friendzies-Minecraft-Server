@@ -1,0 +1,9 @@
+{
+  "near_distance": 512,
+  "far_distance": 4096,
+  "sprites": [
+    "server:obsidian_platform",
+    "server:obsidian_platform_far",
+    "server:obsidian_platform_furthest"
+  ]
+}

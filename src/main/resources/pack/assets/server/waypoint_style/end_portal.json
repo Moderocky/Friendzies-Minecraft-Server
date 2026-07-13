@@ -1,0 +1,9 @@
+{
+  "near_distance": 256,
+  "far_distance": 2048,
+  "sprites": [
+    "server:end_portal",
+    "server:end_portal_far",
+    "server:end_portal_further"
+  ]
+}

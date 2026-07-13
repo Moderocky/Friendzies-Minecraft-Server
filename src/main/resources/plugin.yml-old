@@ -1,0 +1,7 @@
+name: Server
+version: 1.0.0
+main: mx.kenzie.survival.Survival
+description: Stuff
+author: Me
+api-version: '26.1.2'
+load: STARTUP

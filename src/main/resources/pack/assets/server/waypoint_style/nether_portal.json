@@ -1,0 +1,9 @@
+{
+  "near_distance": 128,
+  "far_distance": 2048,
+  "sprites": [
+    "server:nether_portal",
+    "server:nether_portal_far",
+    "server:empty"
+  ]
+}

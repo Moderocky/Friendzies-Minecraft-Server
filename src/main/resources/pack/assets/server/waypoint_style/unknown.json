@@ -1,0 +1,12 @@
+{
+  "near_distance": 64,
+  "far_distance": 1024,
+  "sprites": [
+    "server:unknown",
+    "server:unknown_far",
+    "server:unknown_far",
+    "server:unknown_far",
+    "server:unknown_far",
+    "server:empty"
+  ]
+}

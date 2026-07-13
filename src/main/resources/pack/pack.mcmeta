@@ -1,0 +1,10 @@
+{
+	"pack": {
+		"description": {
+                         "text": "Kenzie's Box of Tricks",
+                         "color": "#b224e5"
+                       },
+        "min_format": 84.0,
+        "max_format": 110
+	}
+}

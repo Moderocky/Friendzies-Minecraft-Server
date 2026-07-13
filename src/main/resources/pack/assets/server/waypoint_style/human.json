@@ -1,0 +1,9 @@
+{
+  "near_distance": 128,
+  "far_distance": 512,
+  "sprites": [
+    "server:human",
+    "server:human_small",
+    "server:human_face"
+  ]
+}

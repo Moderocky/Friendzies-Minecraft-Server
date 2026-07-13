@@ -1,0 +1,9 @@
+{
+  "near_distance": 32,
+  "far_distance": 96,
+  "sprites": [
+    "server:accessibility",
+    "server:language",
+    "server:chat_modified"
+  ]
+}
