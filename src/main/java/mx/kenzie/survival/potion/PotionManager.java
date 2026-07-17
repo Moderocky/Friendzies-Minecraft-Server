@@ -15,6 +15,7 @@ import io.papermc.paper.potion.PotionMix;
 import io.papermc.paper.util.sanitizer.ItemObfuscationBinding;
 import io.papermc.paper.util.sanitizer.ItemObfuscationSession;
 import mx.kenzie.survival.Survival;
+import mx.kenzie.survival.attributes.AttributeManager;
 import mx.kenzie.survival.potion.effects.*;
 import mx.kenzie.survival.tools.recipe.PotionEnchantingRecipe;
 import mx.kenzie.survival.utility.DefaultMap;
@@ -1229,6 +1230,7 @@ public class PotionManager {
 //            new TypedDataComponent<>(DataComponents.MAX_STACK_SIZE, item.getMaxStackSize()).applyTo((PatchedDataComponentMap) item.getComponents());
 //            item.applyComponents(DataComponentPatch.builder().set(DataComponents.MAX_STACK_SIZE, 16).build());
 //        }
+        item = AttributeManager.modifyForSerialisation(item);
         BundleContents bundleContents = item.getComponents().get(BUNDLE_CONTENTS);
         if (bundleContents != null) {
             final var newList = new ArrayList<>(bundleContents.items());

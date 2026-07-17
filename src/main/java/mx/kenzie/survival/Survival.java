@@ -2,6 +2,7 @@ package mx.kenzie.survival;
 
 import io.papermc.paper.datapack.Datapack;
 import mx.kenzie.clockwork.io.IOQueue;
+import mx.kenzie.survival.attributes.AttributeManager;
 import mx.kenzie.survival.bag.BagManager;
 import mx.kenzie.survival.builder.BuildManager;
 import mx.kenzie.survival.command.*;
@@ -38,6 +39,7 @@ public class Survival extends JavaPlugin implements Closeable {
     public static BuildManager builder;
     public static BagManager bagManager;
     public static MailManager mailManager;
+    public static AttributeManager attributeManager;
     public static PotionManager potionManager;
     public static EnchantingManager enchantingManager;
     public static EnchantingRegistry enchantingRegistry;
@@ -83,13 +85,14 @@ public class Survival extends JavaPlugin implements Closeable {
         Survival.mailManager = new MailManager();
         Survival.mailManager.setup();
         Survival.potionManager.setup();
+        Survival.attributeManager.setup();
         Survival.enchantingRegistry.setup();
         Survival.enchantingManager = new EnchantingManager();
         Survival.enchantingManager.setup();
         Survival.pipeManager = new PipeManager();
         Survival.pipeManager.setup();
-        Survival.robotManager = new RobotManager();
-        Survival.robotManager.setup();
+//        Survival.robotManager = new RobotManager();
+//        Survival.robotManager.setup();
         Survival.webServer = new WebServer(25566);
         Survival.webServer.accept();
         Survival.resources = new Resources();
@@ -99,6 +102,7 @@ public class Survival extends JavaPlugin implements Closeable {
 
         new TeleportCommand().register(this);
         new CompassCommand().register(this);
+        new TestingCommand().register(Survival.plugin);
         new RenameCommand().register(this);
         new WhereCommand().register(this);
         new HelpCommand().register(this);
